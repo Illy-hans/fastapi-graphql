@@ -1,8 +1,9 @@
 from sqlalchemy import Column, Integer, Table, ForeignKey, DateTime
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import DeclarativeBase
 from datetime import datetime
 
-Base = declarative_base()
+class Base(DeclarativeBase):
+    pass
 
 user_interest = Table(
     'user_interest', Base.metadata,

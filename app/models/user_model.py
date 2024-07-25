@@ -1,15 +1,16 @@
-from sqlalchemy import Column, Integer, String, Float
-from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Integer, String, Float
+from sqlalchemy.orm import DeclarativeBase, relationship, Mapped, mapped_column
+from app.config.config import user_interest
 
-Base = declarative_base()
+class Base(DeclarativeBase):
+    pass
 
 class User(Base):
     __tablename__ = "User"
-    id: int = Column(Integer, primary_key=True)
-    name: str = Column(String, nullable=False)
-    password: str = Column(String, nullable=False)
-    balance: float = Column(Float, default=0.0)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    password: Mapped[str] = mapped_column(String, nullable=False)
+    balance: Mapped[float] = mapped_column(Float, default=0.0)
 
 
     interests = relationship(
