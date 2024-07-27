@@ -8,7 +8,7 @@ A finance app that calculates how much money has been accrued in an account.
 - [ ] Database connection
     - [ ] Set up 
     - [ ] Sessions
-- GraphQL
+- [ ]GraphQL
     - [ ] User queries & mutations
     - [ ] Interest queries & mutations
 - [ ] Resolvers

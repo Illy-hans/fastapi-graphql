@@ -1,12 +1,12 @@
-from sqlalchemy import Integer, String, Float, DateTime, Boolean, ForeignKey
-from sqlalchemy.orm import DeclarativeBase, relationship, Mapped, mapped_column
+from sqlalchemy import Integer, String, Float, DateTime, Boolean
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 from datetime import datetime
-
-class Base(DeclarativeBase):
-    pass
+from app.db.session import Base
+from app.models import user_interest
 
 class Interest(Base):
-    __tablename__ = "Interest"
+    __tablename__ = "interest"
+    
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
     percentage: Mapped[float] = mapped_column(Float, nullable=False)
@@ -14,7 +14,7 @@ class Interest(Base):
     date_ended: Mapped[datetime] = mapped_column(DateTime, nullable=True)
     active: Mapped[bool] = mapped_column(Boolean, default=False)
 
-    users = relationship(
+    users: Mapped['User'] = relationship(
         'User',
         secondary=user_interest,
         back_populates='interests'
