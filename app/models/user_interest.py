@@ -1,11 +1,11 @@
-from sqlalchemy import Column, Integer, Table, ForeignKey, DateTime
+from sqlalchemy import Integer, ForeignKey, DateTime
+from sqlalchemy.orm import Mapped, mapped_column
 from datetime import datetime
 from app.db.session import Base
 
-user_interest = Table(
-    'user_interest', Base.metadata, 
-    Column('id', Integer, primary_key=True),
-    Column('user_id', Integer, ForeignKey('user.id', ondelete='CASCADE'), primary_key=True),
-    Column('interest_id', Integer, ForeignKey('interest.id', ondelete='CASCADE'), primary_key=True),
-    Column('created', DateTime, default=datetime.now()) 
-)
+class UserInterest(Base):
+    __tablename__ = "user_interest"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('user.id'), nullable=False)
+    interest_id: Mapped[int] = mapped_column(Integer, ForeignKey('interest.id'), nullable=False)
+    created: Mapped[datetime] = mapped_column(DateTime, default=datetime.now())
