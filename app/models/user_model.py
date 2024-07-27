@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, String, Float, Column
+from sqlalchemy import Integer, String, Float
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from app.models import user_interest
 from app.db.session import Base
@@ -10,7 +10,6 @@ class User(Base):
     name: Mapped[str] = mapped_column(String, nullable=False)
     password: Mapped[str] = mapped_column(String, nullable=False)
     balance: Mapped[float] = mapped_column(Float, default=0.0)
-
 
     interests: Mapped['Interest'] = relationship(
         'Interest',
