@@ -3,11 +3,11 @@ from sqlalchemy.orm import relationship, Mapped, mapped_column
 from app.db.session import Base
 from app.models.user_interest import UserInterest
 
-
 class User(Base):
     __tablename__ = "user"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
+    email: Mapped[str] = mapped_column(String, nullable=False)
     password: Mapped[str] = mapped_column(String, nullable=False)
     balance: Mapped[float] = mapped_column(Float, default=0.0)
 

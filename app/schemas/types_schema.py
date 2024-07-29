@@ -14,6 +14,7 @@ class Interest:
 class User:
     id: int
     name: str
+    email: str
     password: str
     balance: float
     interests: list[Interest] | None
