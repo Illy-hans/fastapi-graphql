@@ -17,4 +17,13 @@ class User:
     email: str
     password: str
     balance: float
-    interests: list[Interest] | None
+    interests: list[Interest] 
+
+
+@strawberry.input
+class InterestInput:
+    name: str
+    percentage: float
+    date_started: datetime
+    date_ended: datetime | None
+    active: bool
