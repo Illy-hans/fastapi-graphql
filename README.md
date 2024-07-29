@@ -9,8 +9,23 @@ A finance app that calculates how much money has been accrued in an account.
     - [x] Set up 
     - [x] Sessions
 - [ ] GraphQL
-    - [ ] User queries & mutations
-    - [ ] Interest queries & mutations
+    - [ ] User 
+        - [x] queries
+        - [ ] mutations
+    - [ ] Interest 
+        - [x] queries 
+        - [ ] mutations
 - [ ] Resolvers
     - [ ] User 
+        - [x] GET all_users, user
+        - [x] POST add_user
+        - [ ] PATCH add_interest, update_user_data
+        - [ ] DELETE delete_user
     - [ ] Interest 
+        - [x] GET all_interests, interest
+        - [ ] POST add_interest
+        - [ ] PATCH activate_interest
+        - [ ] DELETE delete_interest
+- [ ] Authentication
+    - [ ] Password hashing
+    - [ ] Tokens introduction
