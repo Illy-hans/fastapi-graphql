@@ -27,3 +27,18 @@ async def add_user(session: AsyncSession, name: str, email: str,
     
     return "User added successfully"
 
+
+async def add_new_interest(session: AsyncSession, user_id: int, interest: InterestInput):
+    stmt = select(UserModel).where(UserModel.id == user_id)
+    result = await session.execute(stmt)
+    existing_user: UserModel | None = result.scalars().first()
+    if existing_user is None:
+        return "User id not found: user does not exist"
+    
+    existing_user.interests.append(interest)
+
+    session.add(existing_user)
+    await session.commit()
+
+    return "Interest successfully added"
+
