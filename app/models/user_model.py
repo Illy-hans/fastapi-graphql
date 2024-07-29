@@ -32,7 +32,6 @@ class User(Base):
             "id": self.id,
             "name": self.name,
             "password": self.password,
-            "balance": self.balance
+            "balance": self.balance,
+            "interests": [interest.as_dict() for interest in self.interests]
         }
-
-print(f"{__name__} module loaded, {User.__tablename__} table created")
