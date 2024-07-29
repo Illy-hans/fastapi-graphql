@@ -1,5 +1,5 @@
 import strawberry
-from app.resolver.user_resolver import get_all_interests, get_all_users, get_user
+from app.resolver.query_resolvers import get_all_interests, get_all_users, get_interest, get_user
 from app.db.session import get_session
 from app.schemas.types_schema import User, Interest
 
@@ -23,3 +23,9 @@ class Query:
         async with get_session() as session:
             interests = await get_all_interests(session)
             return interests
+    
+    @strawberry.field
+    async def interest(self, interest_id: int) -> Interest:
+        async with get_session() as session:
+            interest = await get_interest(session, interest_id)
+            return interest
