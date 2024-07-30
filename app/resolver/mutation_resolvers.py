@@ -27,6 +27,7 @@ async def add_user(session: AsyncSession, name: str, email: str,
     
     return "User added successfully"
 
+# Adds Interest object to user's list of interests
 async def add_new_interest(session: AsyncSession, user_id: int, interest: InterestInput):
     stmt = select(UserModel).where(UserModel.id == user_id)
     result = await session.execute(stmt)
@@ -34,6 +35,15 @@ async def add_new_interest(session: AsyncSession, user_id: int, interest: Intere
     if existing_user is None:
         return "User id not found: user does not exist"
     
+    # Set the active column of all current interests for that user to False
+    update_stmt = (
+        update(UserInterest)
+        .where(UserInterest.user_id == user_id)
+        .values(active=False)
+    )
+    await session.execute(update_stmt)
+
+    # User interest default is set to True
     existing_user.interests.append(interest)
 
     session.add(existing_user)
@@ -41,7 +51,7 @@ async def add_new_interest(session: AsyncSession, user_id: int, interest: Intere
 
     return "Interest successfully added"
 
-
+# Updates user data - not including interest
 async def update_user_data(session: AsyncSession, user_id:int, user: UserInput): 
     stmt = select(UserModel).where(UserModel.id == user_id)
     result = await session.execute(stmt)
@@ -63,6 +73,7 @@ async def update_user_data(session: AsyncSession, user_id:int, user: UserInput):
 
     return "User details updated successfully"
 
+# Deletes user and all corresponding records
 async def delete_user(session: AsyncSession, user_id: int):
     stmt = select(UserModel).where(UserModel.id == user_id)
     result = await session.execute(stmt)
