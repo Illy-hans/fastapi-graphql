@@ -1,4 +1,5 @@
 from typing import Optional
+from pydantic import Field
 import strawberry
 from datetime import datetime
 
@@ -27,11 +28,13 @@ class InterestInput:
     percentage: float
     date_started: datetime
     date_ended: datetime | None
-    active: bool
+    active: bool = Field(default=True)
+
 
 @strawberry.input
 class UserInput:
     name: Optional[str]
     email: Optional[str]
     password: Optional[str]
+    interests : Optional[InterestInput]
     

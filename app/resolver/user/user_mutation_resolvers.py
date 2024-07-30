@@ -1,5 +1,5 @@
 from typing import Optional
-from sqlalchemy import Result, Sequence, Tuple, insert, update, delete
+from sqlalchemy import Delete, Update, insert, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.models.user_interest import UserInterest
@@ -7,17 +7,16 @@ from app.models.user_model import User as UserModel
 from app.schemas.types_schema import InterestInput, UserInput
 
 # Adds new user 
-async def add_user(session: AsyncSession, name: str, email: str, 
-                password: str, balance: float, interest: Optional[InterestInput]):
+async def add_user(session: AsyncSession, user: UserInput, interest: Optional[InterestInput]):
     
-    stmt = select(UserModel).where(UserModel.email == email)
+    stmt = select(UserModel).where(UserModel.email == user.email)
     result = await session.execute(stmt)
     existing_user: UserModel | None = result.scalars().first()
     if existing_user is not None:
         return "Email address is in use"
     
     new_user: UserModel = UserModel(
-        name=name, email=email, password=password, balance=balance)
+        name=user.name, email=user.email, password=user.password, balance=user.balance)
 
     if interest:
         new_user.interests.append(interest)
@@ -28,7 +27,7 @@ async def add_user(session: AsyncSession, name: str, email: str,
     return "User added successfully"
 
 # Adds Interest object to user's list of interests
-async def add_new_interest(session: AsyncSession, user_id: int, interest: InterestInput):
+async def add_new_interest_to_user(session: AsyncSession, user_id: int, interest: InterestInput):
     stmt = select(UserModel).where(UserModel.id == user_id)
     result = await session.execute(stmt)
     existing_user: UserModel | None = result.scalars().first()
@@ -36,7 +35,7 @@ async def add_new_interest(session: AsyncSession, user_id: int, interest: Intere
         return "User id not found: user does not exist"
     
     # Set the active column of all current interests for that user to False
-    update_stmt = (
+    update_stmt: Update = (
         update(UserInterest)
         .where(UserInterest.user_id == user_id)
         .values(active=False)
@@ -85,7 +84,7 @@ async def delete_user(session: AsyncSession, user_id: int):
     await session.execute(delete(UserInterest).where(UserInterest.user_id == user_id))
 
     # delete user record
-    delete_user = delete(UserModel).where(UserModel.id == user_id)
+    delete_user: Delete = delete(UserModel).where(UserModel.id == user_id)
     await session.execute(delete_user)
     await session.commit()
 
