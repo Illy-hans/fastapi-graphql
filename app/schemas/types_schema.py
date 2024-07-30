@@ -1,3 +1,4 @@
+from typing import Optional
 import strawberry
 from datetime import datetime
 
@@ -27,3 +28,10 @@ class InterestInput:
     date_started: datetime
     date_ended: datetime | None
     active: bool
+
+@strawberry.input
+class UserInput:
+    name: Optional[str]
+    email: Optional[str]
+    password: Optional[str]
+    
