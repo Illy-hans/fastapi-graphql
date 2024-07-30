@@ -23,7 +23,7 @@ A finance app that calculates how much money has been accrued in an account.
         - [x] DELETE delete_user
     - [ ] Interest 
         - [x] GET all_interests, interest
-        - [ ] POST add_interest
+        - [ ] POST add_new_interest
         - [ ] PATCH activate_interest
         - [ ] DELETE delete_interest
 - [ ] Authentication

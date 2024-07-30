@@ -1,5 +1,6 @@
 import strawberry
-from app.resolver.query_resolvers import get_all_interests, get_all_users, get_interest, get_user
+from app.resolver.interest.interest_query_resolvers import get_all_interests, get_interest
+from app.resolver.user.user_query_resolvers import get_all_users, get_user
 from app.db.session import get_session
 from app.schemas.types_schema import User, Interest
 

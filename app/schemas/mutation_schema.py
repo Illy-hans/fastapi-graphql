@@ -1,7 +1,7 @@
 from typing import Literal, Optional
 import strawberry
 from app.db.session import get_session
-from app.resolver.mutation_resolvers import add_new_interest, add_user, delete_user, update_user_data
+from app.resolver.user.user_mutation_resolvers import add_new_interest, add_user, delete_user, update_user_data
 from app.schemas.types_schema import InterestInput, UserInput
 
 
