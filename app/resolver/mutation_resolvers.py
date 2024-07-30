@@ -2,6 +2,7 @@ from typing import Optional
 from sqlalchemy import Result, Sequence, Tuple, insert, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from app.models.user_interest import UserInterest
 from app.models.user_model import User as UserModel
 from app.schemas.types_schema import InterestInput, UserInput
 
@@ -61,3 +62,20 @@ async def update_user_data(session: AsyncSession, user_id:int, user: UserInput):
     await session.commit()
 
     return "User details updated successfully"
+
+async def delete_user(session: AsyncSession, user_id: int):
+    stmt = select(UserModel).where(UserModel.id == user_id)
+    result = await session.execute(stmt)
+    existing_user: UserModel | None = result.scalars().first()
+    if existing_user is None:
+        return "User id not found: user does not exist"
+    
+    # delete record in UserInterest table 
+    await session.execute(delete(UserInterest).where(UserInterest.user_id == user_id))
+
+    # delete user record
+    delete_user = delete(UserModel).where(UserModel.id == user_id)
+    await session.execute(delete_user)
+    await session.commit()
+
+    return "User deleted successfully"
