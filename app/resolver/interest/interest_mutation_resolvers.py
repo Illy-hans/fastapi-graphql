@@ -22,3 +22,18 @@ async def add_new_interest(session: AsyncSession, interest: InterestInput):
     await session.commit()
 
     return "Interest added successfully"
+
+
+async def archive_interest(session: AsyncSession, interest_id: int):
+    stmt = select(InterestModel).where(InterestModel.id == interest_id)
+    result = await session.execute(stmt)
+    existing_interest: InterestModel | None = result.scalars().first()
+    if existing_interest is None: 
+        return "Interest id not found: interest does not exist"
+    
+    existing_interest.archived = True 
+
+    session.add(existing_interest)
+    await session.commit()
+    
+    return "Interest archived successfully"
