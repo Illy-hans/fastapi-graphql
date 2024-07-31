@@ -9,7 +9,7 @@ from app.schemas.types_schema import InterestInput
 async def add_new_interest(session: AsyncSession, interest: InterestInput):
     stmt = select(InterestModel).where(InterestModel.name == interest.name)
     result = await session.execute(stmt)
-    existing_interest = result.scalars().first()
+    existing_interest: InterestModel | None = result.scalars().first()
     if existing_interest:
         return "Interest name already in use"
     

@@ -1,6 +1,6 @@
 ## Interest Calculator - Backend
 
-A finance app that calculates how much money has been accrued in an account.
+A finance app that calculates how much money has been accrued in an interest savings account daily.
 
 ### Roadmap
 - [x] Build structure
@@ -24,7 +24,10 @@ A finance app that calculates how much money has been accrued in an account.
     - [ ] Interest 
         - [x] GET all_interests, interest
         - [x] POST add_new_interest
-        - [ ] DELETE delete_interest - add attr for delete
+        - [ ] PATCH archive_interest - updates archived attribute 
+- [ ]  Add new model for Balance 
+    - [ ] Celery to queue automated balance calculations
 - [ ] Authentication
     - [ ] Password hashing
     - [ ] Tokens introduction
+    - [ ] Add admin user

@@ -1,13 +1,15 @@
-from typing import Optional
+from typing import Literal, Optional
 from sqlalchemy import Delete, Update, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from app.models.interest_model import Interest
 from app.models.user_interest import UserInterest
 from app.models.user_model import User as UserModel
+from app.resolver.interest.interest_query_resolvers import get_interest
 from app.schemas.types_schema import InterestInput, UserInput
 
 # Adds new user 
-async def add_user(session: AsyncSession, user: UserInput, interest: Optional[InterestInput]):
+async def add_user(session: AsyncSession, user: UserInput, interest_id: Optional[int]):
     
     stmt = select(UserModel).where(UserModel.email == user.email)
     result = await session.execute(stmt)
@@ -18,7 +20,8 @@ async def add_user(session: AsyncSession, user: UserInput, interest: Optional[In
     new_user: UserModel = UserModel(
         name=user.name, email=user.email, password=user.password, balance=user.balance)
 
-    if interest:
+    if interest_id:
+        interest: Interest | Literal['Interest id not found'] = await get_interest(session, interest_id)
         new_user.interests.append(interest)
 
     session.add(new_user)
@@ -27,7 +30,7 @@ async def add_user(session: AsyncSession, user: UserInput, interest: Optional[In
     return "User added successfully"
 
 # Adds Interest object to user's list of interests
-async def add_new_interest_to_user(session: AsyncSession, user_id: int, interest: InterestInput):
+async def add_new_interest_to_user(session: AsyncSession, user_id: int, interest_id: int):
     stmt = select(UserModel).where(UserModel.id == user_id)
     result = await session.execute(stmt)
     existing_user: UserModel | None = result.scalars().first()
@@ -43,6 +46,7 @@ async def add_new_interest_to_user(session: AsyncSession, user_id: int, interest
     await session.execute(update_stmt)
 
     # User interest default is set to True
+    interest: Interest | Literal['Interest id not found'] = await get_interest(session, interest_id)
     existing_user.interests.append(interest)
 
     session.add(existing_user)

@@ -5,21 +5,20 @@ from app.resolver.interest.interest_mutation_resolvers import add_new_interest
 from app.resolver.user.user_mutation_resolvers import add_new_interest_to_user, add_user, delete_user, update_user_data
 from app.schemas.types_schema import InterestInput, UserInput
 
-
 @strawberry.type
 class Mutation:
 
     @strawberry.field
     async def create_user(self, name: str, email: str, 
-                password: str, balance: float, interest: Optional[InterestInput] = None) -> str:
+                password: str, balance: float, interest_id: Optional[int] = None) -> str:
         async with get_session() as session:
-            new_user: Literal['Email address is in use', 'User added successfully'] = await add_user(session, name, email, password, balance, interest)
+            new_user: Literal['Email address is in use', 'User added successfully'] = await add_user(session, name, email, password, balance, interest_id)
             return new_user
         
     @strawberry.field
-    async def add_interest(self, user_id: int, interest: InterestInput) -> str: 
+    async def add_interest(self, user_id: int, interest_id: int) -> str: 
         async with get_session () as session:
-            update_interest_for_user: Literal['User id not found: user does not exist', 'Interest successfully added'] = await add_new_interest_to_user(session, user_id, interest)
+            update_interest_for_user: Literal['User id not found: user does not exist', 'Interest successfully added'] = await add_new_interest_to_user(session, user_id, interest_id)
             return update_interest_for_user
         
     @strawberry.field
