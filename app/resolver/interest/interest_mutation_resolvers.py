@@ -22,12 +22,3 @@ async def add_new_interest(session: AsyncSession, interest: InterestInput):
     await session.commit()
 
     return "Interest added successfully"
-
-# async def activate_interest(session: AsyncSession, interest_id: int):
-#     stmt = select(InterestModel).where(InterestModel.id == interest_id)
-#     result = await session.execute(stmt)
-#     interest_to_activate: InterestModel | None = result.scalars().first()
-#     if interest_to_activate is None:
-#         return "Interest id not found: interest does not exist"
-    
-    

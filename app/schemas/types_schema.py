@@ -21,7 +21,7 @@ class User:
     balance: float
     interests: list[Interest] 
 
-
+# Default value is set to True as it activates when applied at any point.
 @strawberry.input
 class InterestInput:
     name: str

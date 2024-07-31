@@ -13,6 +13,7 @@ class Interest(Base):
     date_started: Mapped[datetime] = mapped_column(DateTime, nullable=True)
     date_ended: Mapped[datetime] = mapped_column(DateTime, nullable=True)
     active: Mapped[bool] = mapped_column(Boolean, default=False)
+    archived: Mapped[bool] = mapped_column(Boolean, default=False)
 
     users = relationship(
         'User',
@@ -32,5 +33,6 @@ class Interest(Base):
         "percentage": self.percentage,
         "date_started": self.date_started,
         "date_ended": self.date_ended,
-        "active": self.active
+        "active": self.active,
+        "archived": self.archived
     }

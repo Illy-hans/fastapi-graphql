@@ -1,5 +1,5 @@
 from typing import Optional
-from sqlalchemy import Delete, Update, insert, update, delete
+from sqlalchemy import Delete, Update, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.models.user_interest import UserInterest
