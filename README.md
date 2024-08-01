@@ -26,6 +26,8 @@ A finance app that calculates how much money has been accrued in an interest sav
         - [x] POST add_new_interest
         - [x] PATCH archive_interest - updates archived attribute 
 - [ ]  Add new model for Balance 
+    - [ ] GET percentage of interest 
+    - [ ] UPDATE user balance
     - [ ] Celery to queue automated balance calculations
 - [ ] Authentication
     - [ ] Password hashing
