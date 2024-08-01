@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Optional
 from sqlalchemy import Delete, Update, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
@@ -6,7 +6,7 @@ from app.models.interest_model import Interest
 from app.models.user_interest import UserInterest
 from app.models.user_model import User as UserModel
 from app.resolver.interest.interest_query_resolvers import get_interest
-from app.schemas.types_schema import InterestInput, UserInput
+from app.schemas.types_schema import UserInput
 
 # Adds new user 
 async def add_user(session: AsyncSession,  name: str, email: str, 

@@ -1,5 +1,4 @@
 from typing import Optional
-from pydantic import Field
 import strawberry
 from datetime import datetime
 
