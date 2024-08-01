@@ -18,9 +18,9 @@ async def populate_users_and_interests(session: AsyncSession):
 
     # Create interests
     interests = [
-        Interest(name="VIP plan", percentage=7.0, date_started=datetime(2022, 1, 1), date_ended=None, active=True),
-        Interest(name="New offer ", percentage=3.5, date_started=datetime(2022, 2, 1), date_ended=None, active=True),
-        Interest(name="Legacy", percentage=5, date_started=datetime(2022, 3, 1), date_ended=None, active=True),
+        Interest(name="VIP plan", percentage=7.0, date_added=datetime(2022, 1, 1), date_archived=None, active=True),
+        Interest(name="New offer ", percentage=3.5, date_added=datetime(2022, 2, 1), date_archived=None, active=True),
+        Interest(name="Legacy", percentage=5, date_added=datetime(2022, 3, 1), date_archived=None, active=True),
     ]
 
 # Add users and interests to the session

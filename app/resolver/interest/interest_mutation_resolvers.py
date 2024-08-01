@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.models.interest_model import Interest as InterestModel
 from app.schemas.types_schema import InterestInput 
+from datetime import datetime
 
 # Adds new interest option
 async def add_new_interest(session: AsyncSession, interest: InterestInput):
@@ -14,8 +15,8 @@ async def add_new_interest(session: AsyncSession, interest: InterestInput):
         return "Interest name already in use"
     
     new_interest = InterestModel(
-        name=interest.name, percentage=interest.percentage, date_started=interest.date_started,
-        date_ended=interest.date_ended, active=interest.active
+        name=interest.name, percentage=interest.percentage, active=interest.active, 
+        date_archived=interest.date_archived, archived=interest.archived
     )
 
     session.add(new_interest)
@@ -23,8 +24,8 @@ async def add_new_interest(session: AsyncSession, interest: InterestInput):
 
     return "Interest added successfully"
 
-
-async def archive_interest(session: AsyncSession, interest_id: int):
+# Archives interest 
+async def archive_interest(session: AsyncSession, interest_id: int) -> str:
     stmt = select(InterestModel).where(InterestModel.id == interest_id)
     result = await session.execute(stmt)
     existing_interest: InterestModel | None = result.scalars().first()
@@ -32,6 +33,7 @@ async def archive_interest(session: AsyncSession, interest_id: int):
         return "Interest id not found: interest does not exist"
     
     existing_interest.archived = True 
+    existing_interest.date_archived = datetime.now()
 
     session.add(existing_interest)
     await session.commit()

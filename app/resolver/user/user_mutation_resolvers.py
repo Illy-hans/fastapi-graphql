@@ -9,19 +9,22 @@ from app.resolver.interest.interest_query_resolvers import get_interest
 from app.schemas.types_schema import InterestInput, UserInput
 
 # Adds new user 
-async def add_user(session: AsyncSession, user: UserInput, interest_id: Optional[int]):
+async def add_user(session: AsyncSession,  name: str, email: str, 
+                password: str, balance: float, interest_id: Optional[int] = None):
     
-    stmt = select(UserModel).where(UserModel.email == user.email)
+    stmt = select(UserModel).where(UserModel.email == email)
     result = await session.execute(stmt)
     existing_user: UserModel | None = result.scalars().first()
     if existing_user is not None:
         return "Email address is in use"
     
     new_user: UserModel = UserModel(
-        name=user.name, email=user.email, password=user.password, balance=user.balance)
+        name=name, email=email, password=password, balance=balance)
 
     if interest_id:
-        interest: Interest | Literal['Interest id not found'] = await get_interest(session, interest_id)
+        interest: Interest | None = await get_interest(session, interest_id)
+        if interest is None: 
+            return 'Interest id not found'
         new_user.interests.append(interest)
 
     session.add(new_user)
@@ -46,13 +49,15 @@ async def add_new_interest_to_user(session: AsyncSession, user_id: int, interest
     await session.execute(update_stmt)
 
     # User interest default is set to True
-    interest: Interest | Literal['Interest id not found'] = await get_interest(session, interest_id)
+    interest: Interest | None = await get_interest(session, interest_id)
+    if interest is None: 
+            return 'Interest id not found'
     existing_user.interests.append(interest)
 
     session.add(existing_user)
     await session.commit()
 
-    return "Interest successfully added"
+    return "Interest successfully added to user"
 
 # Updates user data - not including interest
 async def update_user_data(session: AsyncSession, user_id:int, user: UserInput): 

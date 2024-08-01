@@ -8,9 +8,10 @@ class Interest:
     id: int
     name: str
     percentage: float
-    date_started: datetime
-    date_ended: datetime | None
-    active: bool
+    date_added: datetime = strawberry.field(default=datetime.now())
+    date_archived: Optional [datetime]
+    active: Optional [bool]
+    archived: Optional[bool]
 
 @strawberry.type
 class User:
@@ -26,15 +27,14 @@ class User:
 class InterestInput:
     name: str
     percentage: float
-    date_started: datetime
-    date_ended: datetime | None
-    active: bool = Field(default=True)
-
+    date_added: datetime = strawberry.field(default=datetime.now())
+    date_archived: Optional[datetime]
+    active: bool = strawberry.field(default=True)
+    archived: Optional [bool]
 
 @strawberry.input
 class UserInput:
     name: Optional[str]
     email: Optional[str]
     password: Optional[str]
-    interests : Optional[InterestInput]
     

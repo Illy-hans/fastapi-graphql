@@ -15,8 +15,5 @@ async def get_interest(session: AsyncSession, interest_id: int):
     )
     result = await session.execute(stmt)
     interest: InterestModel | None = result.scalars().first()
-    if interest: 
-        return interest
-    else: 
-        return "Interest id not found"
+    return interest
 

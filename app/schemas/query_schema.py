@@ -26,7 +26,9 @@ class Query:
             return interests
     
     @strawberry.field
-    async def interest(self, interest_id: int) -> Interest:
+    async def get_interest(self, interest_id: int) -> Interest | None:
         async with get_session() as session:
             interest = await get_interest(session, interest_id)
             return interest
+    
+    

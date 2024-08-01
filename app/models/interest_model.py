@@ -10,9 +10,9 @@ class Interest(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
     percentage: Mapped[float] = mapped_column(Float, nullable=False)
-    date_started: Mapped[datetime] = mapped_column(DateTime, nullable=True)
-    date_ended: Mapped[datetime] = mapped_column(DateTime, nullable=True)
+    date_added: Mapped[datetime] = mapped_column(DateTime, nullable=True, default=datetime.now())
     active: Mapped[bool] = mapped_column(Boolean, default=False)
+    date_archived: Mapped[datetime] = mapped_column(DateTime, nullable=True)
     archived: Mapped[bool] = mapped_column(Boolean, default=False)
 
     users = relationship(
