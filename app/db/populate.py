@@ -12,8 +12,6 @@ async def populate_users_and_interests(session: AsyncSession):
         User(name="Robin", email="1@mail.com", password="password1", balance=100.0),
         User(name="Ruby", email="ruby@mail.com", password="password2", balance=150.0),
         User(name="Idman", email="idman@mail.com",  password="password3", balance=200.0),
-        User(name="Ismael", email="ismael@mail.com", password="password4", balance=250.0),
-        User(name="Omar", email="omar@mail.com", password="password5", balance=300.0),
     ]
 
     # Create interests

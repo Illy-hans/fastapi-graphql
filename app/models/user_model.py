@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, String, Float
+from sqlalchemy import Integer, String
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from app.db.session import Base
 from app.models.user_interest import UserInterest
@@ -9,13 +9,21 @@ class User(Base):
     name: Mapped[str] = mapped_column(String, nullable=False)
     email: Mapped[str] = mapped_column(String, nullable=False)
     password: Mapped[str] = mapped_column(String, nullable=False)
-    balance: Mapped[float] = mapped_column(Float, default=0.0)
+
+    balances = relationship(
+        'Balance', 
+        back_populates='user', 
+        order_by='Balance.date',
+        # Handles the CASCADE ON DELETE for the User model 
+        cascade="all, delete",
+        passive_deletes=True,
+        collection_class=list,
+    )
 
     interests = relationship(
         'Interest',
         secondary=UserInterest.__table__,
         back_populates='users',
-        # Handles the CASCADE ON DELETE for the User model 
         cascade="all, delete",  
         passive_deletes=True,
         collection_class=list,
@@ -32,6 +40,7 @@ class User(Base):
             "id": self.id,
             "name": self.name,
             "password": self.password,
-            "balance": self.balance,
+            "balances": [balance.as_dict() for balance in self.balances],
             "interests": [interest.as_dict() for interest in self.interests]
+
         }
