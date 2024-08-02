@@ -13,12 +13,21 @@ class Interest:
     archived: Optional[bool]
 
 @strawberry.type
+class Balance:
+    id: int
+    user_id: int
+    date: datetime
+    total_balance: float
+    interest_accrued_today: float
+    cumulative_interest_accrued: float
+
+@strawberry.type
 class User:
     id: int
     name: str
     email: str
     password: str
-    balance: float
+    balances: list[Balance]
     interests: list[Interest] 
 
 # Default value is set to True as it activates when applied at any point.
