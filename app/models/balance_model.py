@@ -6,10 +6,10 @@ from app.db.session import Base
 class Balance(Base):
     __tablename__ = "balance"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('users.id'), nullable=False)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('user.id'), nullable=False)
     date: Mapped[datetime] = mapped_column(DateTime, nullable=False)
-    total_amount: Mapped[Numeric] = mapped_column(Numeric(precision=10, scale=2), nullable=False)
-    interest_accrued_today: Mapped[Numeric] = mapped_column(Numeric(precision=10, scale=4), nullable=False)
-    total_interest_accrued: Mapped[Numeric] = mapped_column(Numeric(precision=10, scale=4), nullable=False)
+    total_balance: Mapped[Numeric] = mapped_column(Numeric(precision=10, scale=2), nullable=False)
+    interest_accrued_today: Mapped[Numeric] = mapped_column(Numeric(precision=10, scale=4), nullable=False, default=0.0)
+    cumulative_interest_accrued: Mapped[Numeric] = mapped_column(Numeric(precision=10, scale=4), nullable=False, default=0.0)
 
     user = relationship('User', back_populates="balances")

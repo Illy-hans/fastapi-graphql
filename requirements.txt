@@ -1,6 +1,8 @@
 alembic==1.13.2
 anyio==4.4.0
 asyncpg==0.29.0
+celery==5.4.0
+celery-sqlalchemy==0.1.6
 contextlib2==21.6.0
 fastapi==0.111.1
 fastapi-cli==0.0.4
@@ -16,7 +18,7 @@ SQLAlchemy==2.0.31
 SQLAlchemy-Ext==0.2
 sqlalchemy-orm==1.2.10
 starlette==0.37.2
-strawberry-graphql @ git+https://github.com/strawberry-graphql/strawberry.git@6415e67459ce18d5674ebc85cbedae3f6d39cca1
+strawberry-graphql==0.237.2
 typing-inspect==0.9.0
 typing_extensions==4.12.2
 uvicorn==0.30.3

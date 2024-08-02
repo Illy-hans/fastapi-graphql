@@ -1,6 +1,6 @@
 import asyncio
 from app.db.session import engine, Base
-from app.models import User, Interest, UserInterest
+from app.models import User, Interest, UserInterest, Balance
 
 async def init_db():
     print("Starting database initialization...")
