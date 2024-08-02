@@ -4,14 +4,16 @@ from app.db.session import get_session
 from app.models import User, Interest
 from datetime import datetime
 
+from app.models.balance_model import Balance
+
 # Adds development data
 
 async def populate_users_and_interests(session: AsyncSession):
     # Create users
     users = [
-        User(name="Robin", email="1@mail.com", password="password1", balance=100.0),
-        User(name="Ruby", email="ruby@mail.com", password="password2", balance=150.0),
-        User(name="Idman", email="idman@mail.com",  password="password3", balance=200.0),
+        User(name="Robin", email="1@mail.com", password="password1"),
+        User(name="Ruby", email="ruby@mail.com", password="password2"),
+        User(name="Idman", email="idman@mail.com",  password="password3"),
     ]
 
     # Create interests
@@ -25,12 +27,20 @@ async def populate_users_and_interests(session: AsyncSession):
     users[0].interests.append(interests[0])
     users[1].interests.append(interests[1])
     users[2].interests.append(interests[2])
-    users[3].interests.append(interests[2])
-    users[4].interests.append(interests[1])
+    users[0].interests.append(interests[2])
+    users[1].interests.append(interests[1])
 
     session.add_all(users + interests)
-    await session.commit()
+    await session.flush()
 
+    balances = [
+            Balance(user_id=users[0].id, date=datetime(2024, 1, 8), total_balance=100.00, interest_accrued_today=0.0, cumulative_interest_accrued=0.0000),
+            Balance(user_id=users[1].id, date=datetime(2024, 1, 8), total_balance=200.00, interest_accrued_today=0.0, cumulative_interest_accrued=0.0000),
+            Balance(user_id=users[2].id, date=datetime(2024, 1, 8), total_balance=300.00, interest_accrued_today=0.0, cumulative_interest_accrued=0.0000),
+        ]
+        
+    session.add_all(balances)
+    await session.commit()
 
 async def main():
     async with get_session() as session:
