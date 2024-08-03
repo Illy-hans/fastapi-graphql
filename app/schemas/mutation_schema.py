@@ -1,6 +1,7 @@
 from typing import Literal, Optional
 import strawberry
 from app.db.session import get_session
+from app.resolver.balance.balance_mutation_resolver import add_deposit_into_account
 from app.resolver.interest.interest_mutation_resolvers import add_new_interest, archive_interest
 from app.resolver.user.user_mutation_resolvers import add_new_interest_to_user, add_user, delete_user, update_user_data
 from app.schemas.types_schema import InterestInput, UserInput
@@ -13,7 +14,7 @@ class Mutation:
     async def create_user(self, name: str, email: str, 
                 password: str, balance: float, interest_id: Optional[int] = None) -> str:
         async with get_session() as session:
-            new_user: Literal['Email address is in use', 'User added successfully'] = await add_user(session, name, email, password, balance, interest_id)
+            new_user: Literal['Email address is in use', 'User added successfully']= await add_user(session, name, email, password, balance, interest_id)
             return new_user
     
     # ADD Interest type to user
@@ -50,3 +51,9 @@ class Mutation:
         async with get_session() as session:
             archived_interest: Literal['Interest id not found: interest does not exist', 'Interest archived successfully'] = await archive_interest(session, interest_id)
             return archived_interest
+    
+    @strawberry.field
+    async def add_deposit(self, user_id:int, deposit:float) -> str:
+        async with get_session() as session:
+            add_deposit_result: str = await add_deposit_into_account(session, user_id, deposit)
+            return add_deposit_result
