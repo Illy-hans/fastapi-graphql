@@ -51,7 +51,8 @@ class Mutation:
         async with get_session() as session:
             archived_interest: Literal['Interest id not found: interest does not exist', 'Interest archived successfully'] = await archive_interest(session, interest_id)
             return archived_interest
-    
+
+    # ADD deposit to account
     @strawberry.field
     async def add_deposit(self, user_id:int, deposit:float) -> str:
         async with get_session() as session:
