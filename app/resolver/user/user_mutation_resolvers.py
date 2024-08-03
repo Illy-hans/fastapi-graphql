@@ -2,6 +2,8 @@ from typing import Optional
 from sqlalchemy import Delete, Update, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy.exc import SQLAlchemyError
+from app.models.balance_model import Balance as BalanceModel
 from app.models.interest_model import Interest
 from app.models.user_interest import UserInterest
 from app.models.user_model import User as UserModel
@@ -11,26 +13,40 @@ from app.schemas.types_schema import UserInput
 # Adds new user 
 async def add_user(session: AsyncSession,  name: str, email: str, 
                 password: str, balance: float, interest_id: Optional[int] = None):
-    
-    stmt = select(UserModel).where(UserModel.email == email)
-    result = await session.execute(stmt)
-    existing_user: UserModel | None = result.scalars().first()
-    if existing_user is not None:
-        return "Email address is in use"
-    
-    new_user: UserModel = UserModel(
-        name=name, email=email, password=password, balance=balance)
+    try: 
+        stmt = select(UserModel).where(UserModel.email == email)
+        result = await session.execute(stmt)
+        existing_user: UserModel | None = result.scalars().first()
+        if existing_user is not None:
+            return "Email address is in use"
+        
+        new_user: UserModel = UserModel(
+            name=name, email=email, password=password)
 
-    if interest_id:
-        interest: Interest | None = await get_interest(session, interest_id)
-        if interest is None: 
-            return 'Interest id not found'
-        new_user.interests.append(interest)
+        if interest_id:
+            interest: Interest | None = await get_interest(session, interest_id)
+            if interest is None: 
+                return 'Interest id not found'
+            new_user.interests.append(interest)
 
-    session.add(new_user)
-    await session.commit()
+        session.add(new_user)
+        # Generates ID for new user 
+        await session.flush()
+
+        # Add initial balance
+        add_balance: BalanceModel = BalanceModel(
+            user_id=new_user.id, total_balance=balance, interest_accrued_today=0.000, 
+            cumulative_interest_accrued=0.000
+        )
+        
+        session.add(add_balance)
+        await session.commit()
+        
+        return "User added successfully"
     
-    return "User added successfully"
+    except SQLAlchemyError as error:
+        await session.rollback()
+        return f"Error occurred: {error}"
 
 # Adds Interest object to user's list of interests
 async def add_new_interest_to_user(session: AsyncSession, user_id: int, interest_id: int):
