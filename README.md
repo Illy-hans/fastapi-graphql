@@ -3,9 +3,10 @@
 A finance app that calculates how much money has been accrued in an interest savings account daily. The tech stack used includes: Python, FastAPI, Graphql, Strawberry, SQLAlchemy/Postgres. Celery will be used for automating daily balance updates(message broker tbc) and Pytest for testing.
 
 So far users can: 
-- Create an account with an initial balance amount
-- An interest type can be applied to a users account 
+- Users can create an account with an initial balance amount
 - Users can have multiple interest types, with only one active at a time
+- A users account can be deleted
+- An interest type can be applied to a users account 
 
 
 ### Roadmap
@@ -14,24 +15,24 @@ So far users can:
 - [x] Database connection
     - [x] Set up 
     - [x] Sessions
-- [ ] GraphQL
+- [x] GraphQL
     - [ ] User 
         - [x] queries
-        - [ ] mutations
-    - [ ] Interest 
+        - [x] mutations
+    - [x] Interest 
         - [x] queries 
-        - [ ] mutations
-- [ ] Resolvers
-    - [ ] User 
+        - [x] mutations
+- [x] Resolvers
+    - [x] User 
         - [x] GET all_users, user
         - [x] POST add_user
         - [x] PATCH add_interest, update_user_data
         - [x] DELETE delete_user
-    - [ ] Interest 
+    - [x] Interest 
         - [x] GET all_interests, interest
         - [x] POST add_new_interest
         - [x] PATCH archive_interest - updates archived attribute 
-- [ ] Add Balance model for historial accuracy
+- [x] Add Balance model for historial accuracy
     - [x] Balance model
     - [x] GET percentage of interest 
     - [x] Update User query to load balances
@@ -43,5 +44,5 @@ So far users can:
     - [ ] create service to queue automated balance calculations daily
 - [ ] Authentication
     - [ ] Password hashing
-    - [ ] Tokens introduction
+    - [ ] Tokens introduction/ Log-in & Logout
     - [ ] Add admin user
