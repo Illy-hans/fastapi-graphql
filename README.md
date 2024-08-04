@@ -33,10 +33,11 @@ So far users can:
         - [x] PATCH archive_interest - updates archived attribute 
 - [ ] Add Balance model for historial accuracy
     - [x] Balance model
-    - [ ] GET percentage of interest 
+    - [x] GET percentage of interest 
     - [x] Update User query to load balances
     - [x] Add first balance to user creation
-    - [ ] UPDATE(Add) user balance
+    - [x] UPDATE(Add) user balance
+    - [x] Add daily balance update function
 - [ ] Celery - balance automation
     - [ ] Choose message broker - Postgres/ Redis?
     - [ ] create service to queue automated balance calculations daily
