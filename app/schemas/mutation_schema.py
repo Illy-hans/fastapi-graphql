@@ -20,7 +20,7 @@ class Mutation:
     # ADD Interest type to user
     @strawberry.field
     async def update_interest_for_user(self, user_id: int, interest_id: int) -> str: 
-        async with get_session () as session:
+        async with get_session() as session:
             update_interest_for_user: Literal['User id not found: user does not exist', 'Interest successfully added'] = await add_new_interest_to_user(session, user_id, interest_id)
             return update_interest_for_user
     
@@ -59,14 +59,16 @@ class Mutation:
             add_deposit_result: str = await add_deposit_into_account(session, user_id, deposit)
             return add_deposit_result
     
+    # Calculates interest update for one user
     @strawberry.field
     async def create_new_balance(self, user_id:int) -> str:
         async with get_session() as session:
             update_daily_balance: Literal['User id not found: user does not exist', 'No existing balance found for user.', 'Daily Balance created'] = await update_user_balance_daily(session, user_id)
             return update_daily_balance
     
+    # Updates all user balances daily
     @strawberry.field
     async def all_user_balances_updates(self) -> str:
         async with get_session() as session:
-            result = await all_daily(session)
-            return result
+            all_user_balances_updated: str = await all_daily(session)
+            return all_user_balances_updated

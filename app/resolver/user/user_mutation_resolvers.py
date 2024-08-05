@@ -1,5 +1,6 @@
 from typing import Optional
-from sqlalchemy import Delete, Update, update, delete
+from sqlalchemy import Delete, Update, delete, update
+from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.exc import SQLAlchemyError
@@ -50,7 +51,7 @@ async def add_user(session: AsyncSession,  name: str, email: str,
 
 # Adds Interest object to user's list of interests
 async def add_new_interest_to_user(session: AsyncSession, user_id: int, interest_id: int):
-    stmt = select(UserModel).where(UserModel.id == user_id)
+    stmt = select(UserModel).options(selectinload(UserModel.interests)).where(UserModel.id == user_id)
     result = await session.execute(stmt)
     existing_user: UserModel | None = result.scalars().first()
     if existing_user is None:

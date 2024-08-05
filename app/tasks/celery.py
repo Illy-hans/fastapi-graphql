@@ -7,8 +7,8 @@ app: Celery = Celery('my_app',
         result_backend=settings.DATABASE_URL) 
 
 app.conf.update(
-    task_serializer='json',
-    result_serializer='json',
+    task_serialiser='json',
+    result_serialiser='json',
     accept_content=['json'],
     timezone='UTC',
     enable_utc=True,

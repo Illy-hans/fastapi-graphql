@@ -94,13 +94,9 @@ async def all_daily(session: AsyncSession):
     try:
         for user in users:
             if user.balances is None:
-                print(f"No existing balance found for user {user.id}")
-                continue
-            
+                return f"No existing balance found for user {user.id}"
+                
             latest_balance: BalanceModel | None = max(user.balances, key=lambda balance: balance.date, default=None)
-            if latest_balance is None:
-                print ("No existing balance found for user.")
-                continue
 
             daily_interest_rate: float = await calculate_daily_interest_rate(session, user.id)
 
