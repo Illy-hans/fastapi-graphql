@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     HOST: str = os.getenv('HOST')
     PORT: int = os.getenv('PORT')
     DB: str = os.getenv('DB_NAME')
-    DATABASE_URL: str = Field(default=f"postgresql://{USER}:{PASSWORD}@{HOST}:{PORT}/{DB}")
+    DATABASE_URL: str = Field(default=f"db+postgresql://{USER}:{PASSWORD}@{HOST}:{PORT}/{DB}")
 
     
 settings = Settings()

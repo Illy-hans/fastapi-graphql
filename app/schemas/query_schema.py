@@ -38,7 +38,7 @@ class Query:
     
     # GET active interest percentage for user
     @strawberry.field
-    async def get_interest_percentage(self, user_id: int) -> int:
+    async def get_interest_percentage(self, user_id: int) -> float:
         async with get_session() as session:
             percentage: float | Literal['No active interest found'] = await get_active_interest_percentage(session, user_id)
             return percentage

@@ -108,6 +108,9 @@ async def delete_user(session: AsyncSession, user_id: int):
     # delete record in UserInterest table 
     await session.execute(delete(UserInterest).where(UserInterest.user_id == user_id))
 
+    # delete records from the Balances table
+    await session.execute(delete(BalanceModel).where(BalanceModel.user_id == user_id))
+
     # delete user record
     delete_user: Delete = delete(UserModel).where(UserModel.id == user_id)
     await session.execute(delete_user)

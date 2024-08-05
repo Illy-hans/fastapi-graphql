@@ -7,6 +7,7 @@ contextlib2==21.6.0
 fastapi==0.111.1
 fastapi-cli==0.0.4
 graphql-core==3.2.3
+hiredis==3.0.0
 packaging==24.1
 pip-tools==7.4.1
 pydantic==2.8.2
@@ -14,6 +15,7 @@ pydantic-settings==2.3.4
 pydantic_core==2.20.1
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
+redis==5.0.8
 SQLAlchemy==2.0.31
 SQLAlchemy-Ext==0.2
 sqlalchemy-orm==1.2.10

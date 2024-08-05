@@ -8,6 +8,7 @@ from app.db.session import get_session
 from decimal import Decimal
 
 from app.resolver.interest.interest_query_resolvers import get_active_interest_percentage
+from app.resolver.user.user_query_resolvers import get_all_users
 
 # Add deposit to balance.total_amount for the latest balance record
 async def add_deposit_into_account(session: AsyncSession, user_id: int, deposit: float) -> str:
@@ -84,3 +85,43 @@ async def update_user_balance_daily(session: AsyncSession, user_id: int):
 
     return "Daily Balance created"
 
+
+
+async def all_daily(session: AsyncSession):
+
+    users: list[UserModel] = await get_all_users(session)
+
+    try:
+        for user in users:
+            if user.balances is None:
+                print(f"No existing balance found for user {user.id}")
+                continue
+            
+            latest_balance: BalanceModel | None = max(user.balances, key=lambda balance: balance.date, default=None)
+            if latest_balance is None:
+                print ("No existing balance found for user.")
+                continue
+
+            daily_interest_rate: float = await calculate_daily_interest_rate(session, user.id)
+
+            latest_total_balance: Decimal = Decimal(latest_balance.total_balance)
+            interest_accrued_today: Decimal = latest_total_balance * Decimal(daily_interest_rate)
+
+            new_total_balance = latest_total_balance + interest_accrued_today
+            new_interest_accrued_today = Decimal(interest_accrued_today)
+            new_cumulative_interest_accrued = Decimal(latest_balance.cumulative_interest_accrued + interest_accrued_today)
+
+            new_balance: BalanceModel = BalanceModel(
+                user_id=user.id,  
+                total_balance=new_total_balance,
+                interest_accrued_today=new_interest_accrued_today,
+                cumulative_interest_accrued=new_cumulative_interest_accrued
+            )
+            session.add(new_balance)
+        
+        await session.commit()
+        return "All users updated"
+
+    except Exception as error:
+        await session.rollback()
+        return f"An error occurred: {error}"

@@ -1,7 +1,7 @@
 from typing import Literal, Optional
 import strawberry
 from app.db.session import get_session
-from app.resolver.balance.balance_mutation_resolver import add_deposit_into_account, update_user_balance_daily
+from app.resolver.balance.balance_mutation_resolver import add_deposit_into_account, all_daily, update_user_balance_daily
 from app.resolver.interest.interest_mutation_resolvers import add_new_interest, archive_interest
 from app.resolver.user.user_mutation_resolvers import add_new_interest_to_user, add_user, delete_user, update_user_data
 from app.schemas.types_schema import InterestInput, UserInput
@@ -64,3 +64,9 @@ class Mutation:
         async with get_session() as session:
             update_daily_balance: Literal['User id not found: user does not exist', 'No existing balance found for user.', 'Daily Balance created'] = await update_user_balance_daily(session, user_id)
             return update_daily_balance
+    
+    @strawberry.field
+    async def all_user_balances_updates(self) -> str:
+        async with get_session() as session:
+            result = await all_daily(session)
+            return result
