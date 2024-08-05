@@ -23,7 +23,8 @@ app.conf.update(
 app.conf.beat_schedule = {
     'calculate-daily-balances': {
         'task': 'app.tasks.calculate_daily_balances',
-        'schedule': crontab(minute='*/2'),  
-        # 'schedule': crontab(hour=0, minute=1), 
+        'schedule': crontab(hour=0, minute=1), 
+        # For DEVELOPMENT: Runs task every 2m
+        # 'schedule': crontab(minute='*/2'),  
     },
 }
