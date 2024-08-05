@@ -1,6 +1,6 @@
 ## Interest Calculator - Backend
 
-A finance app that calculates how much money has been accrued in an interest savings account daily. The tech stack used includes: Python, FastAPI, Graphql, Strawberry, SQLAlchemy/Postgres. Celery will be used for automating daily balance updates(message broker tbc) and Pytest for testing.
+A finance app that calculates how much money has been accrued in an interest savings account daily. The tech stack used includes: Python, FastAPI, Graphql, Strawberry, SQLAlchemy/Postgres. Celery will be used for automating daily balance updates with Redis as broker and Pytest for testing.
 
 So far users can: 
 - Users can create an account with an initial balance amount
@@ -40,8 +40,8 @@ So far users can:
     - [x] UPDATE(Add) user balance
     - [x] Add daily balance update function
 - [ ] Celery - balance automation
-    - [ ] Choose message broker - Postgres/ Redis?
-    - [ ] create service to queue automated balance calculations daily
+    - [x] install and set up Redis
+    - [x] create service to queue automated balance calculations daily
 - [ ] Authentication
     - [ ] Password hashing
     - [ ] Tokens introduction/ Log-in & Logout

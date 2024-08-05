@@ -2,4 +2,4 @@ __pycache__
 .venv
 .env
 example.py
-
+celerybeat-schedule.db
