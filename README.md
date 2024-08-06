@@ -9,8 +9,9 @@ So far users can:
 - An interest type can be applied to a users account 
 
 <details>
-<summary> ### Roadmap </summary>
+<summary> Roadmap </summary>
 </br>
+
 - [x] Build structure
 - [x] User & Interest models
 - [x] Database connection
