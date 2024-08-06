@@ -8,8 +8,9 @@ So far users can:
 - A users account can be deleted
 - An interest type can be applied to a users account 
 
-
-### Roadmap
+<details>
+<summary> ### Roadmap </summary>
+</br>
 - [x] Build structure
 - [x] User & Interest models
 - [x] Database connection
@@ -46,3 +47,5 @@ So far users can:
     - [ ] Password hashing
     - [ ] Tokens introduction/ Log-in & Logout
     - [ ] Add admin user
+
+</details>
