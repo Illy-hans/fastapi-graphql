@@ -8,7 +8,7 @@ from app.models.balance_model import Balance as BalanceModel
 from app.models.interest_model import Interest
 from app.models.user_interest import UserInterest
 from app.models.user_model import User as UserModel
-from app.resolver.interest.interest_query_resolvers import get_interest
+from app.resolvers.interest.interest_query_resolvers import get_interest
 from app.schemas.types_schema import UserInput
 from app.utils.password_hasher import Hasher
 

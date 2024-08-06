@@ -7,8 +7,8 @@ from app.models.balance_model import Balance as BalanceModel
 from app.db.session import get_session
 from decimal import Decimal
 
-from app.resolver.interest.interest_query_resolvers import get_active_interest_percentage
-from app.resolver.user.user_query_resolvers import get_all_users
+from app.resolvers.interest.interest_query_resolvers import get_active_interest_percentage
+from app.resolvers.user.user_query_resolvers import get_all_users
 
 # Add deposit to balance.total_amount for the latest balance record
 async def add_deposit_into_account(session: AsyncSession, user_id: int, deposit: float) -> str:

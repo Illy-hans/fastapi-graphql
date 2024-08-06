@@ -1,11 +1,11 @@
 from typing import Literal, Optional
 import strawberry
 from app.db.session import get_session
-from app.resolver.balance.balance_mutation_resolver import add_deposit_into_account, all_daily, update_user_balance_daily
-from app.resolver.interest.interest_mutation_resolvers import add_new_interest, archive_interest
-from app.resolver.user.user_mutation_resolvers import add_new_interest_to_user, add_user, delete_user, update_user_data
-from app.schemas.types_schema import InterestInput, UserInput
-from app.utils.authentication import Authentication
+from app.resolvers.authentication.authentication_resolver import login_resolver
+from app.resolvers.balance.balance_mutation_resolver import add_deposit_into_account, all_daily, update_user_balance_daily
+from app.resolvers.interest.interest_mutation_resolvers import add_new_interest, archive_interest
+from app.resolvers.user.user_mutation_resolvers import add_new_interest_to_user, add_user, delete_user, update_user_data
+from app.schemas.types_schema import InterestInput, LoginResponse, UserInput
 
 @strawberry.type
 class Mutation:
@@ -74,13 +74,9 @@ class Mutation:
             all_user_balances_updated: str = await all_daily(session)
             return all_user_balances_updated
         
-    # Returns access token 
+    # Returns access token valid for 30m and user Name 
     @strawberry.field
-    async def login(self, email: str, password: str) -> str:
+    async def login(self, email: str, password: str) -> LoginResponse:
         async with get_session() as session:
-            user = await Authentication.authenticate_user(session, email, password)
-            print(user)
-            if not user:
-                raise Exception('Invalid username or password')
-            access_token: str = Authentication.create_access_token(data={"user_id": user.id})
-            return access_token
+            access_token_return_dict = await login_resolver(session, email, password)
+            return access_token_return_dict

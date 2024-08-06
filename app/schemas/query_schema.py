@@ -1,7 +1,7 @@
 from typing import Literal
 import strawberry
-from app.resolver.interest.interest_query_resolvers import get_active_interest_percentage, get_all_interests, get_interest
-from app.resolver.user.user_query_resolvers import get_all_users, get_user
+from app.resolvers.interest.interest_query_resolvers import get_active_interest_percentage, get_all_interests, get_interest
+from app.resolvers.user.user_query_resolvers import get_all_users, get_user
 from app.db.session import get_session
 from app.schemas.types_schema import User, Interest
 

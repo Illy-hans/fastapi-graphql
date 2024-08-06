@@ -30,6 +30,11 @@ class User:
     balances: list[Balance]
     interests: list[Interest] 
 
+@strawberry.type
+class LoginResponse:
+    access_token: str
+    user_name: str
+
 # Default value is set to True as it activates when applied at any point.
 @strawberry.input
 class InterestInput:
@@ -46,3 +51,4 @@ class UserInput:
     email: Optional[str]
     password: Optional[str]
     
+
