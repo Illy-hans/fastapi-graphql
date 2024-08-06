@@ -5,6 +5,7 @@ from app.resolver.balance.balance_mutation_resolver import add_deposit_into_acco
 from app.resolver.interest.interest_mutation_resolvers import add_new_interest, archive_interest
 from app.resolver.user.user_mutation_resolvers import add_new_interest_to_user, add_user, delete_user, update_user_data
 from app.schemas.types_schema import InterestInput, UserInput
+from app.utils.authentication import Authentication
 
 @strawberry.type
 class Mutation:
@@ -72,3 +73,14 @@ class Mutation:
         async with get_session() as session:
             all_user_balances_updated: str = await all_daily(session)
             return all_user_balances_updated
+        
+    # Returns access token 
+    @strawberry.field
+    async def login(self, email: str, password: str) -> str:
+        async with get_session() as session:
+            user = await Authentication.authenticate_user(session, email, password)
+            print(user)
+            if not user:
+                raise Exception('Invalid username or password')
+            access_token: str = Authentication.create_access_token(data={"user_id": user.id})
+            return access_token

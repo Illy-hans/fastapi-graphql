@@ -28,3 +28,9 @@ app.conf.beat_schedule = {
         # 'schedule': crontab(minute='*/2'),  
     },
 }
+
+# TO START WORKER:
+# celery -A celery_config  worker --loglevel=info
+
+# TO START WORKER IN DEBUG MODE:
+# celery -A celery_config  worker --loglevel=DEBUG/info

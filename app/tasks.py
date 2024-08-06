@@ -11,3 +11,6 @@ def calculate_daily_balances():
     
     return asyncio.get_event_loop().run_until_complete(run_daily())
 
+
+# TO START TASK QUEUEING:
+# celery -A celery_config  beat --loglevel=info
