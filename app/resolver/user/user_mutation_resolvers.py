@@ -10,7 +10,7 @@ from app.models.user_interest import UserInterest
 from app.models.user_model import User as UserModel
 from app.resolver.interest.interest_query_resolvers import get_interest
 from app.schemas.types_schema import UserInput
-from app.utils.password_hasher import hash_password
+from app.utils.password_hasher import Hasher
 
 # Adds new user 
 async def add_user(session: AsyncSession,  name: str, email: str, 
@@ -22,7 +22,7 @@ async def add_user(session: AsyncSession,  name: str, email: str,
         if existing_user is not None:
             return "Email address is in use"
         
-        hashed_password: str = hash_password(password)
+        hashed_password: str = Hasher.hash_password(password)
         
         new_user: UserModel = UserModel(
             name=name, email=email, password=hashed_password)
@@ -94,7 +94,7 @@ async def update_user_data(session: AsyncSession, user_id:int, user: UserInput):
         existing_user.name = user.name
     
     if user.password:
-        hashed_password: str = hash_password(user.password)
+        hashed_password: str = Hasher.hash_password(user.password)
         existing_user.password = hashed_password
     
     session.add(existing_user)
