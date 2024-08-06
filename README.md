@@ -45,7 +45,7 @@ So far users can:
     - [x] install and set up Redis
     - [x] create service to queue automated balance calculations daily
 - [ ] Authentication
-    - [ ] Password hashing
+    - [x] Password hashing
     - [ ] Tokens introduction/ Log-in & Logout
     - [ ] Add admin user
 

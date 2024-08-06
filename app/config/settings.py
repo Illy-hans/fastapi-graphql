@@ -14,6 +14,9 @@ class Settings(BaseSettings):
     DB: str = os.getenv('DB_NAME')
     DATABASE_URL: str = Field(default=f"db+postgresql://{USER}:{PASSWORD}@{HOST}:{PORT}/{DB}")
 
+    JWT_SECRET: str = os.getenv('secret')
+    JWT_ALGORITHM: str = os.getenv('algorithm')
+
     
 settings = Settings()
 
