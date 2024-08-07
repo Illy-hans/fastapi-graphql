@@ -5,7 +5,8 @@ from app.resolvers.authentication.authentication_resolver import login_resolver
 from app.resolvers.balance.balance_mutation_resolver import add_deposit_into_account, all_daily, update_user_balance_daily
 from app.resolvers.interest.interest_mutation_resolvers import add_new_interest, archive_interest
 from app.resolvers.user.user_mutation_resolvers import add_new_interest_to_user, add_user, delete_user, update_user_data
-from app.schemas.types_schema import InterestInput, LoginResponse, UserInput
+from app.schemas.types_schema import InterestInput, LoginResponse, User, UserInput
+from app.utils.authentication import Authentication
 
 @strawberry.type
 class Mutation:
@@ -80,3 +81,10 @@ class Mutation:
         async with get_session() as session:
             access_token_return_dict = await login_resolver(session, email, password)
             return access_token_return_dict
+    
+    #Decodes token and returns User model
+    @strawberry.field
+    async def decode_user_from_token(self, token: str) -> User:
+        async with get_session() as session:
+            returned_user = await Authentication.decode_token(session, token)
+            return returned_user

@@ -30,6 +30,7 @@ class User:
     balances: list[Balance]
     interests: list[Interest] 
 
+
 @strawberry.type
 class LoginResponse:
     access_token: str
