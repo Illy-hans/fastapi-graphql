@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
+from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from app.config.settings import settings
 from sqlalchemy.orm import DeclarativeBase
@@ -9,8 +10,8 @@ class Base(DeclarativeBase):
 
 
 engine = create_async_engine(
-    f"postgresql+asyncpg://{settings.USER}:{settings.PASSWORD}@{settings.HOST}:{settings.PORT}/{settings.DB}",
-    echo=True
+    f"postgresql+asyncpg://{settings.USER}:{settings.PASSWORD}@{settings.HOST}:{settings.PORT}/{settings.DB}", 
+    poolclass=NullPool
 )
 # print(engine.url)
 
