@@ -42,14 +42,14 @@ class InterestInput:
     name: str
     percentage: float
     date_added: datetime = strawberry.field(default=datetime.now())
-    date_archived: Optional[datetime]
+    date_archived: Optional[datetime] = None
     active: bool = strawberry.field(default=True)
-    archived: Optional [bool]
+    archived: Optional [bool] = None
 
 @strawberry.input
 class UserInput:
-    name: Optional[str]
-    email: Optional[str]
-    password: Optional[str]
+    name: Optional[str] = None
+    email: Optional[str] = None
+    password: Optional[str] = None
     
 
