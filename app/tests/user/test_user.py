@@ -1,51 +1,43 @@
 import pytest
-from sqlalchemy.future import select
-from sqlalchemy.exc import SQLAlchemyError
-from app.db.session import get_session
-from app.models.balance_model import Balance as BalanceModel
-from app.models.interest_model import Interest as InterestModel
-from app.models.user_model import User as UserModel
-from app.resolvers.user.user_mutation_resolvers import add_user
-from app.utils.authentication import Authentication
-from app.utils.password_hasher import Hasher
 from main import schema
 
 
-# @pytest.mark.asyncio
-# async def test_add_user():
-#     add_user_mutation = """
-#             mutation testCreateUser {
-#                 createUser(
-#                 balance: 200, 
-#                 email: "testuser@example.com", 
-#                 name: "Test User", 
-#                 password: "testpassword")
-#             }
-# """
+@pytest.mark.asyncio
+async def test_add_user():
+    add_user_mutation = """
+            mutation testCreateUser {
+                createUser(
+                balance: 200, 
+                email: "testuser@example.com", 
+                name: "Test User", 
+                password: "testpassword",
+                interestId: 1)
+            }
+"""
 
-#     result = await schema.execute(add_user_mutation)
-#     print(result)
+    result = await schema.execute(add_user_mutation)
+    print(result)
 
-#     assert result.errors == None
-#     assert result.data["createUser"] == 'User added successfully'
+    assert result.errors == None
+    assert result.data["createUser"] == 'User added successfully'
 
 
-# @pytest.mark.asyncio
-# async def test_email_in_use():
-#     add_user_mutation = """
-#             mutation testCreateUser {
-#                 createUser(
-#                 balance: 200, 
-#                 email: "testuser@example.com", 
-#                 name: "Test User", 
-#                 password: "testpassword")
-#             }
-# """
+@pytest.mark.asyncio
+async def test_email_in_use():
+    add_user_mutation = """
+            mutation testCreateUser {
+                createUser(
+                balance: 200, 
+                email: "testuser@example.com", 
+                name: "Test User", 
+                password: "testpassword")
+            }
+"""
 
-#     result = await schema.execute(add_user_mutation)
+    result = await schema.execute(add_user_mutation)
 
-#     assert result.errors == None
-#     assert result.data["createUser"] == 'Email address is in use'
+    assert result.errors == None
+    assert result.data["createUser"] == 'Email address is in use'
 
 
 # token variable to be re-used in decode token
@@ -71,7 +63,6 @@ async def test_create_token_for_user():
 
     global auth_token
     auth_token = token
-    print(auth_token)
 
 
 # user_id variable to be used in subsequent tests
@@ -118,6 +109,7 @@ async def test_update_user():
     assert result.errors is None
     assert result.data['updateUser'] == "User details updated successfully"
 
+    
     check_user_updated = """
             query updatesUser($user_id: Int!) {
                 user(userId: $user_id) {
@@ -128,10 +120,58 @@ async def test_update_user():
 """
 
     updated_user = await schema.execute(check_user_updated, variable_values={"user_id": user_id})
-    print(updated_user)
 
     assert updated_user.errors is None
     assert updated_user.data['user']['email'] == "new_email@example.com"
     assert updated_user.data['user']['name'] == "My name"
 
+
+@pytest.mark.asyncio 
+async def test_user_interest_updated_for_user():
+    update_user_interest = """
+            mutation updatesInterest($user_id: Int!, $interest_id: Int!) {
+                updateInterestForUser(interestId: $interest_id, userId: $user_id)
+            }
+"""
+    interest_update_variables = {
+        "user_id": user_id, 
+        "interest_id": 2
+    }
+
+    update_interest = await schema.execute(update_user_interest, variable_values=interest_update_variables)
+
+    assert update_interest.errors is None
+
+    check_user_interest_updated = """
+            query updatesUser($user_id: Int!) {
+                user(userId: $user_id) {
+                    email
+                    name
+                    interests {
+                        name
+                        active
+                        dateAdded
+                        archived
+                        dateArchived
+                        id
+                        }
+                    
+                }
+            }
+"""
+
+    check_interest = await schema.execute(check_user_interest_updated, variable_values={"user_id": user_id} )
+    print(check_interest)
+
+    assert check_interest.errors is None
+    interests = check_interest.data['user']['interests']
+
+    # Check that the interest added is active
+    assert interests[-1]['active'] == True
+    assert interests[-1]['archived'] == False
+    assert interests[-1]['dateArchived'] == None
+
+    check_interest_active_and_added = """
+        query
+"""
 

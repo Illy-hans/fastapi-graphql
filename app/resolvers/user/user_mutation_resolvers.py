@@ -68,10 +68,11 @@ async def add_new_interest_to_user(session: AsyncSession, user_id: int, interest
     )
     await session.execute(update_stmt)
 
-    # User interest default is set to True
     interest: Interest | None = await get_interest(session, interest_id)
     if interest is None: 
             return 'Interest id not found'
+    # Show Interest as activated
+    interest.active = True
     existing_user.interests.append(interest)
 
     session.add(existing_user)

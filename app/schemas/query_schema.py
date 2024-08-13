@@ -3,7 +3,8 @@ import strawberry
 from app.resolvers.interest.interest_query_resolvers import get_active_interest_percentage, get_all_interests, get_interest
 from app.resolvers.user.user_query_resolvers import get_all_users, get_user
 from app.db.session import get_session
-from app.schemas.types_schema import User, Interest
+from app.resolvers.user_interest.user_interest_query_resolver import get_all_user_interests
+from app.schemas.types_schema import User, Interest, UserInterest
 
 @strawberry.type
 class Query:
@@ -21,6 +22,13 @@ class Query:
         async with get_session() as session:
             user = await get_user(session, user_id)
             return user
+    
+    # GET user interests for user 
+    @strawberry.field
+    async def user_interest(self, user_id: int) -> list[UserInterest]:
+        async with get_session() as session: 
+            user_interests = await get_all_user_interests(session, user_id)
+            return user_interests
 
     # GET ALL interest
     @strawberry.field

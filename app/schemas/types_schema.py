@@ -22,6 +22,14 @@ class Balance:
     cumulative_interest_accrued: float
 
 @strawberry.type
+class UserInterest:
+    id: int
+    user_id: int
+    interest_id: int
+    created: datetime
+    active: bool
+
+@strawberry.type
 class User:
     id: int
     name: str
@@ -29,7 +37,6 @@ class User:
     password: str
     balances: list[Balance]
     interests: list[Interest] 
-
 
 @strawberry.type
 class LoginResponse:
