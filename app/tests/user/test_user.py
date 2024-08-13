@@ -203,3 +203,18 @@ async def test_user_interest_updated_for_user():
     created_date = datetime.fromisoformat(last_interest['created']).date()
     today = datetime.now().date()
     assert created_date == today
+
+
+@pytest.mark.asyncio
+async def test_delete_user():
+    delete_user = """
+            mutation deleteUser($user_id: Int!) {
+                deleteUser(userId: $user_id)
+                }
+"""
+
+    deleted_user = await schema.execute(delete_user, variable_values={"user_id": user_id})
+    print(deleted_user)
+
+    assert deleted_user.errors == None
+    assert deleted_user.data['deleteUser'] == "User deleted successfully"
