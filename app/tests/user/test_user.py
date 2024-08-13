@@ -1,6 +1,6 @@
 import pytest
 from main import schema
-
+from datetime import datetime
 
 @pytest.mark.asyncio
 async def test_add_user():
@@ -126,8 +126,11 @@ async def test_update_user():
     assert updated_user.data['user']['name'] == "My name"
 
 
+# Tests updated interest for user 
 @pytest.mark.asyncio 
 async def test_user_interest_updated_for_user():
+
+    # Sends mutation to update user interest 
     update_user_interest = """
             mutation updatesInterest($user_id: Int!, $interest_id: Int!) {
                 updateInterestForUser(interestId: $interest_id, userId: $user_id)
@@ -142,6 +145,7 @@ async def test_user_interest_updated_for_user():
 
     assert update_interest.errors is None
 
+    # Confirms interest details have been updated once applied to user 
     check_user_interest_updated = """
             query updatesUser($user_id: Int!) {
                 user(userId: $user_id) {
@@ -160,8 +164,7 @@ async def test_user_interest_updated_for_user():
             }
 """
 
-    check_interest = await schema.execute(check_user_interest_updated, variable_values={"user_id": user_id} )
-    print(check_interest)
+    check_interest = await schema.execute(check_user_interest_updated, variable_values={"user_id": user_id})
 
     assert check_interest.errors is None
     interests = check_interest.data['user']['interests']
@@ -171,7 +174,32 @@ async def test_user_interest_updated_for_user():
     assert interests[-1]['archived'] == False
     assert interests[-1]['dateArchived'] == None
 
+    # Confirms user interest has been updated 
     check_interest_active_and_added = """
-        query
+            query userInterest($user_id: Int!) {
+                userInterest(userId: $user_id) {
+                    id
+                    active
+                    created
+                    userId
+                    interestId
+                }
+            }
 """
 
+    confirm_interest_active = await schema.execute(check_interest_active_and_added, variable_values={"user_id": user_id})
+    print(confirm_interest_active)
+
+    assert confirm_interest_active.errors is None
+    assert confirm_interest_active.data['userInterest'][-1]['active'] == True
+    assert confirm_interest_active.data['userInterest'][-1]['interestId'] == 2
+
+    # Confirms all other user interests are INACTIVE 
+    for interest in confirm_interest_active.data['userInterest'][:-1]:
+        assert interest['active'] == False
+
+    # Confirms the created date is today 
+    last_interest = confirm_interest_active.data['userInterest'][-1]
+    created_date = datetime.fromisoformat(last_interest['created']).date()
+    today = datetime.now().date()
+    assert created_date == today
