@@ -128,7 +128,7 @@ async def test_update_user():
 
 # Tests updated interest for user 
 @pytest.mark.asyncio 
-async def test_user_interest_updated_for_user():
+async def test_user_interest_updated():
 
     # Sends mutation to update user interest 
     update_user_interest = """
@@ -218,3 +218,17 @@ async def test_delete_user():
 
     assert deleted_user.errors == None
     assert deleted_user.data['deleteUser'] == "User deleted successfully"
+
+    confirm_user_deleted = """
+            query user($user_id: Int!) {
+                user(userId: $user_id) {
+                    id
+                    name
+                }
+            }
+"""
+
+    deleted_user_confirmation = await schema.execute(confirm_user_deleted, variable_values={"user_id": user_id})
+
+    assert deleted_user_confirmation.errors == None
+    assert deleted_user_confirmation.data['user'] == 'null'
