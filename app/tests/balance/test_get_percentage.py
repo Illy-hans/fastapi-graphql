@@ -1,9 +1,6 @@
 import pytest
 from main import schema
 
-# Sets global percentage to be used 
-percentage_for_user: int = None
-
 @pytest.mark.asyncio
 async def test_get_percentage():
 
