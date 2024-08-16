@@ -34,6 +34,9 @@ $ docker build --tag YOUR_DIRECTORY_NAME .
 $ docker run --publish 8000:8000 YOUR_DIRECTORY_NAME
 ```
 
+You can now interact with the GraphQL API by visiting [http://localhost:8000/graphq](http://localhost:8000/graphql). 
+
+
 <details>
 <summary> Roadmap </summary>
 </br>
@@ -67,12 +70,11 @@ $ docker run --publish 8000:8000 YOUR_DIRECTORY_NAME
     - [x] Add first balance to user creation
     - [x] UPDATE(Add) user balance
     - [x] Add daily balance update function
-- [ ] Celery - balance automation
+- [x] Celery - balance automation
     - [x] install and set up Redis
     - [x] create service to queue automated balance calculations daily
-- [ ] Authentication
+- [x] Authentication
     - [x] Password hashing
-    - [ ] Tokens introduction/ Log-in & Logout
-    - [ ] Add admin user
+    - [x] Tokens introduction
 
 </details>
