@@ -1,12 +1,38 @@
 ## Interest Calculator - Backend
 
-A finance app that calculates how much money has been accrued in an interest savings account daily. The tech stack used includes: Python, FastAPI, Graphql, Strawberry, SQLAlchemy/Postgres. Celery will be used for automating daily balance updates with Redis as broker and Pytest for testing.
+A finance app that calculates how much money has been accrued in an interest savings account daily. The tech stack used includes: Python, FastAPI, GraphQL, Strawberry, SQLAlchemy/Postgres. Celery for automating daily balance updates with Redis as broker and Pytest for testing. 
 
-So far users can: 
-- Users can create an account with an initial balance amount
-- Users can have multiple interest types, with only one active at a time
-- A users account can be deleted
-- An interest type can be applied to a users account 
+### To run
+
+Python, Pip, Postgres and Docker need to be installed locally. 
+
+Create a .env file with the following variables: 
+
+```bash 
+DB_NAME= DB name for project
+USER= Your Postgres username 
+PASSWORD= Your Posgres password
+HOST='localhost'
+PORT= '5432' 
+
+# These are for authentication purposes
+secret='chooseArandomstring'
+algorithm='HS256'
+```
+
+Create the virtual environment and install dependencies:
+
+```bash
+$ pipenv shell 
+$ pipenv install 
+```
+
+Ensure Docker desktop is running, build the image and run the container
+
+```bash
+$ docker build --tag YOUR_DIRECTORY_NAME . 
+$ docker run --publish 8000:8000 YOUR_DIRECTORY_NAME
+```
 
 <details>
 <summary> Roadmap </summary>
