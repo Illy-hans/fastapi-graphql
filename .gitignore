@@ -2,5 +2,4 @@ __pycache__
 .venv
 .env
 celerybeat-schedule.db
-Dockerfile
 .pytest_cache
